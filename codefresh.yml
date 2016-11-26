@@ -14,12 +14,12 @@ steps:
     working_directory: ${{main_clone}}
     fail_fast: false
     commands:
-      - ls -l
-      - cp artifact/artifact.example ./artifact.example
+      - ls -l /codefresh/volume/
+      - cp artifact/artifact.example /codefresh/volume/artifact.example
 
   validate:
      image: ${{build_prj}}
      working_directory: ${{main_clone}}
      commands:
         - pwd
-        - ls
+        - ls -l /codefresh/volume
