@@ -1,0 +1,24 @@
+version: '1.0'
+
+steps:
+
+  build_prj:
+    type: build
+    description: UC - build step
+    image_name: codefreshio/yaml-example
+    dockerfile: Dockerfile
+    tag: ${{CF_BRANCH}}
+
+  freestyle_step:
+    image: ${{build_prj}}
+    working_directory: ${{main_clone}}
+    fail_fast: false
+    commands:
+      - cp artifact/artifact.example ./artifact.example
+
+  validate:
+     image: ${{build_prj}}
+     working_directory: ${{main_clone}}
+     commands:
+        - pwd
+        - ls
