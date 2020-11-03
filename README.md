@@ -9,5 +9,5 @@ pipeline steps but also between subsequent builds of the same pipeline.
 
 See the [codefresh.yml](codefresh.yml) for an example pipeline.
 
-More details can be found in [Codefresh documentation](https://codefresh.io/docs/docs/yaml-examples/examples/shared-volumes-between-builds/#example-source-code)
+More details can be found in [Codefresh documentation](https://codefresh.io/docs/docs/yaml-examples/examples/shared-volumes-between-builds).
 
