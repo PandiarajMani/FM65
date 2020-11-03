@@ -1,25 +1,42 @@
-version: '1.0'
+version: "1.0"
+stages:
+  - "clone"
+  - "build"
+  - "shared-volume"
 
 steps:
+  clone:
+    title: "Cloning repository"
+    type: "git-clone"
+    repo: "codefreshdemo/cf-example-shared-volumes-between-builds"
+    revision: "master"
+    stage: "clone"
 
-  build_prj:
-    type: build
-    description: UC - build step
-    image_name: codefreshio/yaml-example
-    dockerfile: Dockerfile
-    tag: ${{CF_BRANCH}}
-
-  freestyle_step:
-    image: ${{build_prj}}
-    working_directory: ${{main_clone}}
-    fail_fast: false
+  build_image:
+    title: "Building image"
+    type: "build"
+    image_name: "sample-app"
+    working_directory: "${{clone}}"
+    tag: "demo"
+    dockerfile: "Dockerfile"
+    stage: "build"
+  
+  copy_to_shared_volume:
+    title: "Copy file to shared volume"
+    type: "freestyle" 
+    image: alpine:3.9 
+    working_directory: "${{clone}}"
     commands:
       - ls -l /codefresh/volume/
-      - cp artifact/artifact.example /codefresh/volume/artifact.example
-
-  validate:
-     image: ${{build_prj}}
-     working_directory: ${{main_clone}}
-     commands:
-        - pwd
-        - ls -l /codefresh/volume
+      - cp ./artifact/artifact.example /codefresh/volume/artifact.example
+    stage: "shared-volume"
+    
+  list_shared_volume:
+    title: "List shared volume files"
+    type: "freestyle" 
+    image: alpine:3.9 
+    working_directory: "${{clone}}"
+    commands:
+      - pwd
+      - ls -l /codefresh/volume
+    stage: "shared-volume"
